@@ -66,9 +66,7 @@ export function Drawer({ open, onClose, lang, onOpenSheet, onToggleLang }: Drawe
             <span style={{ flex: 1, textAlign: ar ? 'right' : 'left' }}>{ar ? 'English' : 'العربية'}</span>
           </button>
           <p style={{ marginTop: 12, fontFamily: ar ? 'var(--font-arabic)' : undefined }}>
-            {ar
-              ? 'أرشيف عائلي. الأسماء والتواريخ موثَّقة من السجلات والرواية الشفوية.'
-              : 'A family archive. Names and dates are documented where possible from registers and oral history.'}
+            {ar ? ABOUT_TEXT.ar : ABOUT_TEXT.en}
           </p>
         </div>
       </aside>
