@@ -1,5 +1,7 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { Lang, TreeLayout, Palette, FilterMode, SheetName } from '@/lib/types'
+import { DEFAULT_LANG, DEFAULT_PALETTE } from '@/lib/config'
 
 interface AppState {
   lang: Lang
@@ -34,41 +36,49 @@ interface AppState {
   setRelBId: (id: string | null) => void
 }
 
-export const useAppStore = create<AppState>((set) => ({
-  lang: 'ar',
-  layout: 'tidy',
-  palette: 'olive',
-  showGenLegend: true,
-  selectedId: null,
-  collapsed: new Set(),
-  filterMode: 'all',
-  genSingle: 1,
-  genRange: [1, 8],
-  highlightPath: null,
-  openSheet: null,
-  relAId: null,
-  relBId: null,
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      lang: DEFAULT_LANG,
+      layout: 'tidy',
+      palette: DEFAULT_PALETTE,
+      showGenLegend: true,
+      selectedId: null,
+      collapsed: new Set(),
+      filterMode: 'all',
+      genSingle: 1,
+      genRange: [1, 8],
+      highlightPath: null,
+      openSheet: null,
+      relAId: null,
+      relBId: null,
 
-  setLang: (lang) => set({ lang }),
-  toggleLang: () => set((s) => ({ lang: s.lang === 'ar' ? 'en' : 'ar' })),
-  setLayout: (layout) => set({ layout }),
-  setPalette: (palette) => set({ palette }),
-  toggleGenLegend: () => set((s) => ({ showGenLegend: !s.showGenLegend })),
-  setSelectedId: (selectedId) => set({ selectedId }),
-  openPerson: (id) => set({ selectedId: id, openSheet: 'person' }),
-  toggleCollapse: (id) =>
-    set((s) => {
-      const next = new Set(s.collapsed)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return { collapsed: next }
+      setLang: (lang) => set({ lang }),
+      toggleLang: () => set((s) => ({ lang: s.lang === 'ar' ? 'en' : 'ar' })),
+      setLayout: (layout) => set({ layout }),
+      setPalette: (palette) => set({ palette }),
+      toggleGenLegend: () => set((s) => ({ showGenLegend: !s.showGenLegend })),
+      setSelectedId: (selectedId) => set({ selectedId }),
+      openPerson: (id) => set({ selectedId: id, openSheet: 'person' }),
+      toggleCollapse: (id) =>
+        set((s) => {
+          const next = new Set(s.collapsed)
+          if (next.has(id)) next.delete(id)
+          else next.add(id)
+          return { collapsed: next }
+        }),
+      setFilterMode: (filterMode) => set({ filterMode }),
+      setGenSingle: (genSingle) => set({ genSingle }),
+      setGenRange: (genRange) => set({ genRange }),
+      setHighlightPath: (highlightPath) => set({ highlightPath }),
+      clearHighlight: () => set({ highlightPath: null }),
+      setOpenSheet: (openSheet) => set({ openSheet }),
+      setRelAId: (relAId) => set({ relAId }),
+      setRelBId: (relBId) => set({ relBId }),
     }),
-  setFilterMode: (filterMode) => set({ filterMode }),
-  setGenSingle: (genSingle) => set({ genSingle }),
-  setGenRange: (genRange) => set({ genRange }),
-  setHighlightPath: (highlightPath) => set({ highlightPath }),
-  clearHighlight: () => set({ highlightPath: null }),
-  setOpenSheet: (openSheet) => set({ openSheet }),
-  setRelAId: (relAId) => set({ relAId }),
-  setRelBId: (relBId) => set({ relBId }),
-}))
+    {
+      name: 'karajah-prefs',
+      partialize: (s) => ({ lang: s.lang, palette: s.palette }),
+    }
+  )
+)

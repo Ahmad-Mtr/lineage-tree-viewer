@@ -1,4 +1,5 @@
-import { useMemo, useEffect, useRef } from 'react'
+import { useMemo, useEffect, useRef, useCallback } from 'react'
+import type { MouseEvent as ReactMouseEvent } from 'react'
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -40,7 +41,7 @@ interface NodeData {
 function PersonNode({ data }: { data: NodeData }) {
   const {
     person, lang, palette, isSelected, isOnPath, isHidden,
-    collapsed, canCollapse, layout, onToggleCollapse, onSelect,
+    collapsed, canCollapse, layout, onToggleCollapse,
   } = data
   const ar = lang === 'ar'
   const color = genColor(person.gen, palette)
@@ -60,7 +61,6 @@ function PersonNode({ data }: { data: NodeData }) {
     <div
       className={cls}
       style={{ background: isOnPath ? undefined : bg }}
-      onClick={() => onSelect(person.id)}
     >
       <Handle type="target" position={tgtPos} />
       <span className="tree-node__swatch" style={{ background: color }} />
@@ -184,6 +184,11 @@ function TreeInner({
     return () => cancelAnimationFrame(id)
   }, [fitKey])
 
+  const handleNodeClick = useCallback((_e: ReactMouseEvent, node: Node) => {
+    const nd = node.data as NodeData
+    if (!nd.isHidden) onSelect(nd.person.id)
+  }, [onSelect])
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -199,6 +204,7 @@ function TreeInner({
       maxZoom={2.5}
       proOptions={{ hideAttribution: true }}
       style={{ background: 'transparent' }}
+      onNodeClick={handleNodeClick}
       onInit={(instance) => {
         rfRef.current = instance
         instance.fitView({ padding: 0.15 })

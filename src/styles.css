@@ -148,7 +148,7 @@
 }
 
 @media (min-width: 720px) { :root { --app-max-w: 640px; } }
-@media (min-width: 1024px) { :root { --app-max-w: 760px; } }
+@media (min-width: 1024px) { :root { --app-max-w: 100%; } }
 
 /* ── Top bar ───────────────────────────────────────────────────────────── */
 .topbar {
@@ -170,11 +170,16 @@
   display: flex; flex-direction: column;
   align-items: center; gap: 1px; text-align: center;
 }
+.topbar__title-row {
+  display: flex; align-items: center; gap: 4px;
+  min-width: 0;
+}
 .topbar__title {
   font-family: var(--font-display);
-  font-size: 18px; font-weight: 500; line-height: 1;
+  font-size: 18px; font-weight: 500; line-height: 1.2;
   color: var(--ink);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-width: 0;
 }
 .topbar__title.ar { font-family: var(--font-arabic); font-size: 19px; }
 .topbar__sub { font-size: 11px; color: var(--ink-mute); letter-spacing: 0.02em; white-space: nowrap; }
@@ -344,6 +349,7 @@
 .tree-hint.ar { font-family: var(--font-arabic); font-size: 12px; }
 
 /* ── React Flow overrides ──────────────────────────────────────────────── */
+.react-flow__node-personNode { cursor: pointer; }
 .react-flow__handle {
   opacity: 0;
   pointer-events: none;

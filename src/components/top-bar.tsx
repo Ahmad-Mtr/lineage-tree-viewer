@@ -1,4 +1,5 @@
 import type { Lang } from '@/lib/types'
+import { OliveIcon } from "./icons"
 
 interface TopBarProps {
   title: string
@@ -12,14 +13,29 @@ export function TopBar({ title, subtitle, lang, onMenu, onSearch }: TopBarProps)
   const ar = lang === 'ar'
   return (
     <header className="topbar">
-      <button type="button" className="icon-btn" onClick={onMenu} aria-label="Menu">
+      <button
+        type="button"
+        className="icon-btn"
+        onClick={onMenu}
+        aria-label="Menu"
+      >
         <MenuIcon />
       </button>
       <div className="topbar__center">
-        <div className={`topbar__title${ar ? ' ar' : ''}`}>{title}</div>
-        <div className={`topbar__sub${ar ? ' ar' : ''}`}>{subtitle}</div>
+        <div className="topbar__title-row">
+          <OliveIcon size={ar ? 32 : 28} />
+          <span className={`topbar__title${ar ? "ar" : ""}`}>{title}</span>
+        </div>
+        {subtitle && (
+          <div className={`topbar__sub${ar ? "ar" : ""}`}>{subtitle}</div>
+        )}
       </div>
-      <button type="button" className="icon-btn" onClick={onSearch} aria-label="Search">
+      <button
+        type="button"
+        className="icon-btn"
+        onClick={onSearch}
+        aria-label="Search"
+      >
         <SearchIcon />
       </button>
     </header>

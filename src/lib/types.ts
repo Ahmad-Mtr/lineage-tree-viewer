@@ -56,6 +56,6 @@ export interface KarajahData {
 
 export type Lang = 'ar' | 'en'
 export type TreeLayout = 'tidy' | 'columns' | 'radial'
-export type Palette = 'olive' | 'warm' | 'cool' | 'mono'
+export type { Palette } from './config'
 export type FilterMode = 'all' | 'single' | 'range'
 export type SheetName = 'search' | 'filter' | 'person' | 'relate' | 'stats' | 'menu' | null

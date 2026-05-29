@@ -1,4 +1,5 @@
 import type { Person, KarajahData, RelResult, Stats } from './types'
+import { DEFAULT_HONORIFIC } from './config'
 
 function mkPerson(
   id: string, gen: number, fatherId: string | null,
@@ -14,7 +15,7 @@ function mkPerson(
     diedCirca: opts.diedCirca !== false && died !== null,
     placeEn, placeAr,
     verified: opts.verified !== false,
-    honorific: 'رحمه الله',
+    honorific: DEFAULT_HONORIFIC,
     bioEn: opts.bioEn ?? '',
     bioAr: opts.bioAr ?? '',
     sourcesEn: opts.sourcesEn ?? [],
