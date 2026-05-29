@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import type { Lang } from '@/lib/types'
 import { APP_TITLE_AR, APP_TITLE_EN, APP_SUB_AR, APP_SUB_EN } from '@/lib/i18n'
+import { ABOUT_TEXT } from '@/lib/config'
 
 interface DrawerProps {
   open: boolean

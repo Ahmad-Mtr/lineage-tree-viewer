@@ -23,5 +23,12 @@ export const PALETTES = {
 
 export type Palette = keyof typeof PALETTES
 
+// ── Sidebar about text ────────────────────────────────────────────────────────
+export const ABOUT_TEXT = {
+  en: 'A family archive. Names and dates are documented where possible from registers and oral history.',
+  ar: 'أرشيف عائلي. الأسماء والتواريخ موثَّقة من السجلات والرواية الشفوية.',
+} as const
+
+// ── Defaults ──────────────────────────────────────────────────────────────────
 export const DEFAULT_LANG = 'ar' as const
 export const DEFAULT_PALETTE: Palette = 'olive'
