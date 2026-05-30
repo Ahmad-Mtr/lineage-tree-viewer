@@ -1,7 +1,7 @@
 // ── App identity ──────────────────────────────────────────────────────────
 export const APP_TITLE = {
   en: "Nasser Karajah Tree",
-  ar: "حمولة ناصر كَرَاجَة",
+  ar: " حمولة ناصر كَرَاجَة",
 } as const
 
 export const APP_SUBTITLE = {

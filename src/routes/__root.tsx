@@ -12,10 +12,20 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1, viewport-fit=cover",
       },
-      { title: "حمولة آل ناصر كَرَاجَة" },
+      { title: " حمولة آل ناصر كَرَاجَة" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon/favicon.svg", type: "image/svg+xml" },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "96x96",
+        href: "/favicon/favicon-96x96.png",
+      },
+      { rel: "apple-touch-icon", href: "/favicon/apple-touch-icon.png" },
+      { rel: "manifest", href: "/favicon/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
