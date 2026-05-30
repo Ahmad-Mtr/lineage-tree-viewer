@@ -2476,7 +2476,7 @@ function descendantCount(id: string): number {
   return n
 }
 
-function topBranches(atGen = 1) {
+function topBranches(atGen = generations[1] ?? generations[0]) {
   return (byGen[atGen] ?? [])
     .map(p => ({ p, count: descendantCount(p.id) }))
     .sort((a, b) => b.count - a.count)

@@ -1,8 +1,6 @@
-import type { Lang } from '@/lib/types'
-import { data } from '@/lib/data'
+import type { Lang, KarajahData, Palette } from '@/lib/types'
 import { personFirst, t } from '@/lib/i18n'
 import { genColor } from '@/lib/palettes'
-import type { Palette } from '@/lib/types'
 import { Sheet } from './sheet'
 
 interface StatsSheetProps {
@@ -10,12 +8,13 @@ interface StatsSheetProps {
   onClose: () => void
   lang: Lang
   palette: Palette
+  data: KarajahData
 }
 
-export function StatsSheet({ open, onClose, lang, palette }: StatsSheetProps) {
+export function StatsSheet({ open, onClose, lang, palette, data }: StatsSheetProps) {
   const ar = lang === 'ar'
   const stats = data.stats()
-  const branches = data.topBranches(2)
+  const branches = data.topBranches()
   const maxGenCount = Math.max(...stats.perGen.map(g => g.count))
 
   return (
