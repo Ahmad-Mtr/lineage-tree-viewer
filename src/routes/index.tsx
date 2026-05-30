@@ -1,8 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback, useState, useMemo } from 'react'
 import { useAppStore } from '@/store'
-import { data } from '@/lib/data'
+import { data, getSubtree } from '@/lib/data'
 import { t, APP_TITLE_AR, APP_TITLE_EN, APP_SUB_AR, APP_SUB_EN } from '@/lib/i18n'
+import {
+  Combobox, ComboboxInput, ComboboxContent,
+  ComboboxList, ComboboxItem,
+} from '@/components/ui/combobox'
 
 import { TopBar } from '@/components/top-bar'
 import { GenLegend } from '@/components/gen-legend'
@@ -18,6 +22,12 @@ export const Route = createFileRoute('/')({ component: App })
 
 const LAYOUTS = ['tidy', 'columns', 'radial'] as const
 
+const TREE_OPTIONS = [
+  { value: 'all',  ar: 'الكل',         en: 'All' },
+  { value: 'g2-1', ar: 'مصطفى (ج٢)',  en: 'Mustafa (G2)' },
+  { value: 'g4-4', ar: 'مطر (ج٤)',     en: 'Matar (G4)' },
+] as const
+
 function App() {
   const {
     lang, layout, palette, showGenLegend,
@@ -25,12 +35,18 @@ function App() {
     filterMode, genSingle, genRange,
     openSheet,
     relAId, relBId,
+    subtreeRoot,
     toggleLang, setLayout, setPalette,
     openPerson, toggleCollapse, setHighlightPath,
     setFilterMode, setGenSingle, setGenRange,
     setOpenSheet, setRelAId, setRelBId,
-    toggleGenLegend,
+    toggleGenLegend, setSubtreeRoot,
   } = useAppStore()
+
+  const displayData = useMemo(
+    () => subtreeRoot ? getSubtree(subtreeRoot) : data,
+    [subtreeRoot]
+  )
 
   const ar = lang === 'ar'
 
@@ -93,6 +109,24 @@ function App() {
             ))}
           </div>
           <div style={{ flex: 1 }} />
+
+          {/* Subtree selector */}
+          <Combobox
+            value={subtreeRoot ?? 'all'}
+            onValueChange={(v) => setSubtreeRoot(!v || v === 'all' ? null : v)}
+          >
+            <ComboboxInput readOnly showClear={false} className="h-7 w-36 text-xs" />
+            <ComboboxContent>
+              <ComboboxList>
+                {TREE_OPTIONS.map(o => (
+                  <ComboboxItem key={o.value} value={o.value}>
+                    {ar ? o.ar : o.en}
+                  </ComboboxItem>
+                ))}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+
           <button
             type="button"
             className={`chip${ar ? ' ar' : ''}`}
@@ -116,7 +150,7 @@ function App() {
           <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--border)' }}>
             <GenLegend
               palette={palette}
-              generations={data.generations}
+              generations={displayData.generations}
               lang={lang}
               activeGens={activeGens}
               onToggle={(g) => {
@@ -148,7 +182,7 @@ function App() {
           <div style={{ position: 'absolute', inset: 0 }}>
             {mounted && (
               <TreeView
-                data={data}
+                data={displayData}
                 lang={lang}
                 layout={layout}
                 palette={palette}

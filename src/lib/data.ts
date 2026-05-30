@@ -240,3 +240,80 @@ export const data: KarajahData = {
   ancestors, relationship, descendantCount, topBranches, stats,
   root: people.find(p => p.fatherId === null)!,
 }
+
+export function getSubtree(rootId: string): KarajahData {
+  const ids = new Set<string>()
+  const q = [rootId]
+  while (q.length) {
+    const id = q.shift()!
+    ids.add(id)
+    for (const c of childrenOf[id] ?? []) q.push(c)
+  }
+
+  const sp = people.filter(p => ids.has(p.id))
+  const sById: Record<string, Person> = Object.fromEntries(sp.map(p => [p.id, p]))
+  const sChildrenOf: Record<string, string[]> = Object.fromEntries(
+    sp.map(p => [p.id, (childrenOf[p.id] ?? []).filter(c => ids.has(c))])
+  )
+  const sByGen: Record<number, Person[]> = {}
+  sp.forEach(p => { (sByGen[p.gen] ??= []).push(p) })
+  const sGens = Object.keys(sByGen).map(Number).sort((a, b) => a - b)
+
+  function sAncestors(id: string): string[] {
+    const out: string[] = []
+    let cur: Person | undefined = sById[id]
+    while (cur) { out.push(cur.id); cur = cur.fatherId && ids.has(cur.fatherId) ? sById[cur.fatherId] : undefined }
+    return out
+  }
+
+  function sRelationship(aId: string, bId: string): RelResult | null {
+    if (!sById[aId] || !sById[bId]) return null
+    const aAnc = sAncestors(aId)
+    const bAnc = sAncestors(bId)
+    const bSet = new Set(bAnc)
+    let lca: string | null = null
+    for (const x of aAnc) { if (bSet.has(x)) { lca = x; break } }
+    if (!lca) return null
+    const aPath = aAnc.slice(0, aAnc.indexOf(lca) + 1)
+    const bPath = bAnc.slice(0, bAnc.indexOf(lca) + 1)
+    return { lca, aPath, bPath, aSteps: aPath.length - 1, bSteps: bPath.length - 1 }
+  }
+
+  function sDescendantCount(id: string): number {
+    let n = 1
+    for (const c of sChildrenOf[id] ?? []) n += sDescendantCount(c)
+    return n
+  }
+
+  function sTopBranches(atGen = sGens[1] ?? sGens[0]) {
+    return (sByGen[atGen] ?? [])
+      .map(p => ({ p, count: sDescendantCount(p.id) }))
+      .sort((a, b) => b.count - a.count)
+  }
+
+  function sStats(): Stats {
+    const total = sp.length
+    const generationCount = sGens.length
+    const perGen = sGens.map(g => ({ gen: g, count: sByGen[g].length }))
+    const fathers = sp.filter(p => sChildrenOf[p.id].length > 0)
+    const avgChildren = fathers.length
+      ? fathers.reduce((s, p) => s + sChildrenOf[p.id].length, 0) / fathers.length
+      : 0
+    const verified = sp.filter(p => p.verified).length
+    const births = sp.map(p => p.born).filter((b): b is number => b !== null)
+    return {
+      total, generationCount, perGen, avgChildren,
+      fathersCount: fathers.length, verified,
+      earliestBorn: births.length ? Math.min(...births) : null,
+      latestBorn: births.length ? Math.max(...births) : null,
+    }
+  }
+
+  return {
+    people: sp, byId: sById, byGen: sByGen, generations: sGens,
+    childrenOf: sChildrenOf, ancestors: sAncestors,
+    relationship: sRelationship, descendantCount: sDescendantCount,
+    topBranches: sTopBranches, stats: sStats,
+    root: sById[rootId],
+  }
+}

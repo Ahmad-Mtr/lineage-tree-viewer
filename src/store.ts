@@ -17,6 +17,7 @@ interface AppState {
   openSheet: SheetName
   relAId: string | null
   relBId: string | null
+  subtreeRoot: string | null
 
   setLang: (l: Lang) => void
   toggleLang: () => void
@@ -34,6 +35,7 @@ interface AppState {
   setOpenSheet: (s: SheetName) => void
   setRelAId: (id: string | null) => void
   setRelBId: (id: string | null) => void
+  setSubtreeRoot: (id: string | null) => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -52,6 +54,7 @@ export const useAppStore = create<AppState>()(
       openSheet: null,
       relAId: null,
       relBId: null,
+      subtreeRoot: null,
 
       setLang: (lang) => set({ lang }),
       toggleLang: () => set((s) => ({ lang: s.lang === 'ar' ? 'en' : 'ar' })),
@@ -75,6 +78,7 @@ export const useAppStore = create<AppState>()(
       setOpenSheet: (openSheet) => set({ openSheet }),
       setRelAId: (relAId) => set({ relAId }),
       setRelBId: (relBId) => set({ relBId }),
+      setSubtreeRoot: (subtreeRoot) => set({ subtreeRoot }),
     }),
     {
       name: 'karajah-prefs',

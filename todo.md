@@ -3,3 +3,5 @@
 - [ ] tree from X
 - [ ] rm logo from header
 - [ ] null issue
+- [ ] sidebar note
+- [ ] sidebar issues
