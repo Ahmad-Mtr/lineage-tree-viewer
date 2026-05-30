@@ -1,7 +1,7 @@
 // ── App identity ──────────────────────────────────────────────────────────
 export const APP_TITLE = {
-  en: 'Karajah',
-  ar: 'آل كَرَاجَة',
+  en: "Nasser Karajah Tree",
+  ar: "حمولة ناصر كَرَاجَة",
 } as const
 
 export const APP_SUBTITLE = {
@@ -25,8 +25,8 @@ export type Palette = keyof typeof PALETTES
 
 // ── Sidebar about text ────────────────────────────────────────────────────────
 export const ABOUT_TEXT = {
-  en: 'A family archive. Names and dates are documented where possible from registers and oral history.',
-  ar: 'أرشيف عائلي. الأسماء والتواريخ موثَّقة من السجلات والرواية الشفوية.',
+  en: "A family archive based on Dr. Salah Al-Houdlieh's book “Nasab ʿAshiret Al-Amir Muhammad Karajah fi Qaryat Safa”, which traced the family line, and Nashat Mahmoud Matar's work on documenting the newer generations.",
+  ar: "أرشيف عائلي يستند إلى كتاب الدكتور صلاح الهودلية «نسب عشيرة الأمير محمد قراجة في قرية صفا» الذي تتبّع جميع من هنا، وإلى جهد نشأت محمود مطر في تتبّع الأجيال الجديدة.",
 } as const
 
 // ── Defaults ──────────────────────────────────────────────────────────────────
