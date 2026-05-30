@@ -23,7 +23,7 @@ export function TopBar({ title, subtitle, lang, onMenu, onSearch }: TopBarProps)
       </button>
       <div className="topbar__center">
         <div className="topbar__title-row">
-          <OliveIcon size={ar ? 32 : 28} />
+          {/* <OliveIcon size={ar ? 32 : 28} /> */}
           <span className={`topbar__title${ar ? "ar" : ""}`}>{title}</span>
         </div>
         {subtitle && (

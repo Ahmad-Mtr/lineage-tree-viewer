@@ -23,8 +23,6 @@ const strings = {
   close: { en: "Close", ar: "إغلاق" },
   back: { en: "Back", ar: "رجوع" },
   menu: { en: "Menu", ar: "القائمة" },
-  born: { en: "Born", ar: "وُلد" },
-  died: { en: "Died", ar: "توفّي" },
   place: { en: "Place", ar: "المكان" },
   father: { en: "Father", ar: "الأب" },
   sons: { en: "Sons", ar: "الأبناء" },
@@ -67,13 +65,6 @@ export function personPlace(p: Person, lang: Lang) {
   return lang === 'ar' ? p.placeAr : p.placeEn
 }
 
-export function lifespan(p: Person, lang: Lang) {
-  const circa = (year: number, isCirca: boolean) =>
-    isCirca ? (lang === 'ar' ? `${year} تقريباً` : `c. ${year}`) : `${year}`
-  const left = circa(p.born, p.bornCirca)
-  const right = p.died != null ? circa(p.died, p.diedCirca) : (lang === 'ar' ? '؟' : '?')
-  return `${left}–${right}`
-}
 
 export const APP_TITLE_AR = APP_TITLE.ar
 export const APP_TITLE_EN = APP_TITLE.en

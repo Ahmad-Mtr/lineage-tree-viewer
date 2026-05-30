@@ -47,7 +47,7 @@ export function Drawer({ open, onClose, lang, onOpenSheet, onToggleLang }: Drawe
               key={id}
               type="button"
               className={`drawer__item${ar ? ' ar' : ''}`}
-              onClick={() => { onOpenSheet(id); onClose() }}
+              onClick={() => onOpenSheet(id)}
             >
               <Icon />
               <span style={{ flex: 1, textAlign: ar ? 'right' : 'left' }}>{label}</span>

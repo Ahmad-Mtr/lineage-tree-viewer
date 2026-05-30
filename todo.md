@@ -1,7 +1,8 @@
-- [ ] fix bugs
+- [x] fix bugs
 - [ ] favicons
-- [ ] tree from X
-- [ ] rm logo from header
-- [ ] null issue
-- [ ] sidebar note
-- [ ] sidebar issues
+- [x] tree from X
+- [x] rm logo from header
+- [x] null issue
+- [x] sidebar note
+- [x] sidebar issues
+- [ ] fix(statistics): should be consistent with selected tree.

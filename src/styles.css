@@ -344,7 +344,6 @@
   background: rgba(251, 248, 240, 0.88);
   padding: 3px 10px; border-radius: 9999px;
   border: 1px solid var(--border); z-index: 5;
-  pointer-events: none;
 }
 .tree-hint.ar { font-family: var(--font-arabic); font-size: 12px; }
 

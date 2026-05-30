@@ -21,7 +21,7 @@ const src = readFileSync(FILE, 'utf8')
 type Entry = { id: string; fatherId: string | null; firstAr: string; firstEn: string }
 
 const entries: Entry[] = []
-const lineRe  = /id:\s*'([^']+)'.*?fatherId:\s*('([^']*)'|null).*?firstAr:\s*'([^']*)'.*?firstEn:\s*'([^']*)'/g
+const lineRe  = /id:\s*"([^"]+)".*?fatherId:\s*("([^"]*)"|\s*null).*?firstAr:\s*"([^"]*)".*?firstEn:\s*"([^"]*)"/gs
 let m: RegExpExecArray | null
 while ((m = lineRe.exec(src)) !== null) {
   entries.push({ id: m[1], fatherId: m[3] ?? null, firstAr: m[4], firstEn: m[5] })
@@ -35,25 +35,30 @@ const replacements = new Map<string, { nameAr: string; nameEn: string }>()
 for (const e of entries) {
   const parent = e.fatherId ? byId[e.fatherId] : null
   replacements.set(e.id, {
-    nameAr: parent && mode === 'add' ? `${e.firstAr} بن ${parent.firstAr}` : e.firstAr,
-    nameEn: parent && mode === 'add' ? `${e.firstEn} ibn ${parent.firstEn}` : e.firstEn,
+    nameAr: parent && mode === 'add' ? `${e.firstAr} ${parent.firstAr}` : e.firstAr,
+    nameEn: parent && mode === 'add' ? `${e.firstEn} ${parent.firstEn}` : e.firstEn,
   })
 }
 
 // ── 3. Apply to source text line by line ─────────────────────────────────────
 
-const idLineRe = /id:\s*'([^']+)'/
+const idLineRe = /id:\s*"([^"]+)"/
 
 let changed = 0
+let currentId: string | null = null
 const result = src.split('\n').map(line => {
   const idMatch = idLineRe.exec(line)
-  if (!idMatch) return line
-  const rep = replacements.get(idMatch[1])
+  if (idMatch) { currentId = idMatch[1]; return line }
+
+  if (!currentId) return line
+  if (/^\s*\},?/.test(line)) { currentId = null; return line }
+
+  const rep = replacements.get(currentId)
   if (!rep) return line
 
   const updated = line
-    .replace(/(nameAr:\s*')[^']*(')/,  `$1${rep.nameAr}$2`)
-    .replace(/(nameEn:\s*')[^']*(')/,  `$1${rep.nameEn}$2`)
+    .replace(/(nameAr:\s*")[^"]*(")/,  `$1${rep.nameAr}$2`)
+    .replace(/(nameEn:\s*")[^"]*(")/,  `$1${rep.nameEn}$2`)
   if (updated !== line) changed++
   return updated
 }).join('\n')
@@ -75,8 +80,8 @@ if (dryRun) {
     if (after[i] !== before[i]) {
       const bid = (idLineRe.exec(before[i]) ?? [])[1] ?? '?'
       console.log(`  [${bid}]`)
-      console.log(`    - ${before[i].match(/nameAr:\s*'[^']*'|nameEn:\s*'[^']*'/g)?.join('  ')}`)
-      console.log(`    + ${after[i].match(/nameAr:\s*'[^']*'|nameEn:\s*'[^']*'/g)?.join('  ')}`)
+      console.log(`    - ${before[i].match(/nameAr:\s*"[^"]*"|nameEn:\s*"[^"]*"/g)?.join('  ')}`)
+      console.log(`    + ${after[i].match(/nameAr:\s*"[^"]*"|nameEn:\s*"[^"]*"/g)?.join('  ')}`)
       shown++
     }
   }

@@ -122,22 +122,6 @@ export function StatsSheet({ open, onClose, lang, palette }: StatsSheetProps) {
             </div>
           </section>
         )}
-
-        {/* Timeline note */}
-        <section>
-          <div className={`section-eyebrow${ar ? ' ar' : ''}`}>{ar ? 'الامتداد الزمني' : 'Timeline'}</div>
-          <p style={{
-            margin: '10px 0 0', fontSize: 14, lineHeight: 1.8,
-            color: 'var(--ink-mute)',
-            fontFamily: ar ? 'var(--font-arabic)' : 'var(--font-display)',
-            direction: ar ? 'rtl' : 'ltr',
-            fontStyle: ar ? 'normal' : 'italic',
-          }}>
-            {ar
-              ? `من حوالي ${stats.earliestBorn}م إلى حوالي ${stats.latestBorn}م — ما يقارب ${stats.latestBorn - stats.earliestBorn} عاماً من التاريخ الموثَّق.`
-              : `From c. ${stats.earliestBorn} to c. ${stats.latestBorn} — roughly ${stats.latestBorn - stats.earliestBorn} years of documented history.`}
-          </p>
-        </section>
       </div>
     </Sheet>
   )
