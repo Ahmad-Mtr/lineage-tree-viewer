@@ -6,7 +6,7 @@ export interface Person {
   nameAr: string
   firstEn: string
   firstAr: string
-  born: number
+  born: number | null
   died: number | null
   bornCirca: boolean
   diedCirca: boolean
@@ -36,8 +36,8 @@ export interface Stats {
   avgChildren: number
   fathersCount: number
   verified: number
-  earliestBorn: number
-  latestBorn: number
+  earliestBorn: number | null
+  latestBorn: number | null
 }
 
 export interface KarajahData {
