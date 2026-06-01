@@ -1,5 +1,8 @@
 # Family Tree Viewer
 
+![image](image.png)
+
+
 A bilingual (Arabic/English) family tree web app built with TanStack Start, React Flow, and Tailwind CSS.
 
 Features: interactive tree visualization (tidy, columns, radial layouts), person profiles, generation filtering, search, relationship finder, and basic statistics.
