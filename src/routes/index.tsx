@@ -82,6 +82,17 @@ function App() {
     setOpenSheet(name)
   }, [setOpenSheet])
 
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        setOpenSheet(openSheet === 'search' ? null : 'search')
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [openSheet, setOpenSheet])
+
   const handleSelectPerson = useCallback((id: string) => {
     openPerson(id)
   }, [openPerson])
