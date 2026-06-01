@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { Lang } from '@/lib/types'
+import type { ColorTheme } from '@/store'
 import { APP_TITLE_AR, APP_TITLE_EN, APP_SUB_AR, APP_SUB_EN } from '@/lib/i18n'
 import { ABOUT_TEXT } from '@/lib/config'
 
@@ -7,11 +8,13 @@ interface DrawerProps {
   open: boolean
   onClose: () => void
   lang: Lang
+  theme: ColorTheme
   onOpenSheet: (name: 'search' | 'filter' | 'relate' | 'stats') => void
   onToggleLang: () => void
+  onSetTheme: (t: ColorTheme) => void
 }
 
-export function Drawer({ open, onClose, lang, onOpenSheet, onToggleLang }: DrawerProps) {
+export function Drawer({ open, onClose, lang, theme, onOpenSheet, onToggleLang, onSetTheme }: DrawerProps) {
   const ar = lang === 'ar'
 
   useEffect(() => {
@@ -60,6 +63,24 @@ export function Drawer({ open, onClose, lang, onOpenSheet, onToggleLang }: Drawe
             type="button"
             className={`drawer__item${ar ? ' ar' : ''}`}
             style={{ padding: '12px 0', borderInlineStart: 'none' }}
+            onClick={() => {
+              const next: ColorTheme = theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system'
+              onSetTheme(next)
+            }}
+          >
+            <ThemeIcon theme={theme} />
+            <span style={{ flex: 1, textAlign: ar ? 'right' : 'left' }}>
+              {theme === 'system'
+                ? (ar ? 'تلقائي' : 'System')
+                : theme === 'light'
+                  ? (ar ? 'فاتح' : 'Light')
+                  : (ar ? 'داكن' : 'Dark')}
+            </span>
+          </button>
+          <button
+            type="button"
+            className={`drawer__item${ar ? ' ar' : ''}`}
+            style={{ padding: '12px 0', borderInlineStart: 'none' }}
             onClick={onToggleLang}
           >
             <LangIcon />
@@ -101,6 +122,24 @@ function ChartIcon() {
 function LangIcon() {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 8h7"/><path d="M8.5 5v3"/><path d="M5.5 14c2 4 5 4 7 0"/><path d="M9 11h3"/><path d="M14 17l3-7 3 7"/><path d="M15 15h4"/></svg>
 }
+function ThemeIcon({ theme }: { theme: ColorTheme }) {
+  if (theme === 'dark') return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  )
+  if (theme === 'light') return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/>
+    </svg>
+  )
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>
+    </svg>
+  )
+}
+
 function ChevronIcon({ ar }: { ar: boolean }) {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

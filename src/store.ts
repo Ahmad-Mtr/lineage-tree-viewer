@@ -3,8 +3,11 @@ import { persist } from 'zustand/middleware'
 import type { Lang, TreeLayout, Palette, FilterMode, SheetName } from '@/lib/types'
 import { DEFAULT_LANG, DEFAULT_PALETTE } from '@/lib/config'
 
+export type ColorTheme = 'light' | 'dark' | 'system'
+
 interface AppState {
   lang: Lang
+  theme: ColorTheme
   layout: TreeLayout
   palette: Palette
   showGenLegend: boolean
@@ -19,6 +22,7 @@ interface AppState {
   relBId: string | null
   subtreeRoot: string | null
 
+  setTheme: (t: ColorTheme) => void
   setLang: (l: Lang) => void
   toggleLang: () => void
   setLayout: (l: TreeLayout) => void
@@ -42,6 +46,7 @@ export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       lang: DEFAULT_LANG,
+      theme: 'system' as ColorTheme,
       layout: "tidy",
       palette: DEFAULT_PALETTE,
       showGenLegend: false,
@@ -56,6 +61,7 @@ export const useAppStore = create<AppState>()(
       relBId: null,
       subtreeRoot: null,
 
+      setTheme: (theme) => set({ theme }),
       setLang: (lang) => set({ lang }),
       toggleLang: () => set((s) => ({ lang: s.lang === "ar" ? "en" : "ar" })),
       setLayout: (layout) => set({ layout }),
@@ -82,7 +88,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "karajah-prefs",
-      partialize: (s) => ({ lang: s.lang, palette: s.palette }),
+      partialize: (s) => ({ lang: s.lang, theme: s.theme, palette: s.palette }),
     }
   )
 )

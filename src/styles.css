@@ -108,6 +108,35 @@
   --dur-base: 240ms;
 }
 
+/* ── Dark mode palette ─────────────────────────────────────────────────── */
+.dark {
+  --parchment:      #1B1814;
+  --parchment-deep: #231F1B;
+  --cream:          #201D19;
+  --ink:            #E8E3D8;
+  --ink-soft:       #D4CCBE;
+  --ink-mute:       #9A9180;
+  --ink-faint:      #6B6358;
+  --taupe:          #3A342C;
+  --taupe-soft:     #2E2923;
+  --taupe-deep:     #4A4339;
+  --olive:          #8A9B50;
+  --olive-deep:     #A8B46A;
+  --olive-soft:     #4A5226;
+  --olive-wash:     #252B14;
+  --terracotta:     #C46050;
+}
+
+.dark .topbar {
+  background: rgba(27, 24, 20, 0.88);
+}
+.dark .tree-hint {
+  background: rgba(32, 29, 25, 0.88);
+}
+.dark .react-flow__controls-button {
+  background: rgba(32, 29, 25, 0.94) !important;
+}
+
 /* ── Base ──────────────────────────────────────────────────────────────── */
 @layer base {
   * { box-sizing: border-box; }

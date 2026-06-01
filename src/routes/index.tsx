@@ -30,13 +30,13 @@ const TREE_OPTIONS = [
 
 function App() {
   const {
-    lang, layout, palette, showGenLegend,
+    lang, theme, layout, palette, showGenLegend,
     selectedId, collapsed, highlightPath,
     filterMode, genSingle, genRange,
     openSheet,
     relAId, relBId,
     subtreeRoot,
-    toggleLang, setLayout, setPalette,
+    toggleLang, setLayout, setPalette, setTheme,
     openPerson, toggleCollapse, setHighlightPath,
     setFilterMode, setGenSingle, setGenRange,
     setOpenSheet, setRelAId, setRelBId,
@@ -50,14 +50,33 @@ function App() {
 
   const ar = lang === 'ar'
 
-  // Sync <html> lang + dir when language changes
   const [mounted, setMounted] = useState(false)
   useEffect(() => { setMounted(true) }, [])
 
+  // Sync <html> lang + dir when language changes
   useEffect(() => {
     document.documentElement.lang = lang
     document.documentElement.dir = ar ? 'rtl' : 'ltr'
   }, [lang, ar])
+
+  // Sync <html> dark class with theme setting
+  useEffect(() => {
+    const root = document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+      return
+    }
+    if (theme === 'light') {
+      root.classList.remove('dark')
+      return
+    }
+    // system
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const apply = (e: MediaQueryList | MediaQueryListEvent) => root.classList.toggle('dark', e.matches)
+    apply(mq)
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [theme])
 
   const handleOpenSheet = useCallback((name: 'search' | 'filter' | 'relate' | 'stats') => {
     setOpenSheet(name)
@@ -205,8 +224,10 @@ function App() {
         open={openSheet === 'menu'}
         onClose={() => setOpenSheet(null)}
         lang={lang}
+        theme={theme}
         onOpenSheet={handleOpenSheet}
         onToggleLang={toggleLang}
+        onSetTheme={setTheme}
       />
 
       {/* Sheets */}
