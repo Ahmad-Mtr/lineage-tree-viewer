@@ -184,6 +184,15 @@ function TreeInner({
     return () => cancelAnimationFrame(id)
   }, [fitKey])
 
+  // Center and zoom to the selected node whenever selection changes
+  useEffect(() => {
+    if (!selectedId) return
+    const id = requestAnimationFrame(() =>
+      rfRef.current?.fitView({ nodes: [{ id: selectedId }], duration: 400, padding: 0.5, maxZoom: 1.5 })
+    )
+    return () => cancelAnimationFrame(id)
+  }, [selectedId])
+
   const handleNodeClick = useCallback((_e: ReactMouseEvent, node: Node) => {
     const nd = node.data as NodeData
     if (!nd.isHidden) onSelect(nd.person.id)
