@@ -1,6 +1,6 @@
 # Family Tree Viewer
 
-![image](image.png)
+![image.png](image.png)
 
 
 A bilingual (Arabic/English) family tree web app built with TanStack Start, React Flow, and Tailwind CSS.
